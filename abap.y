@@ -1,3 +1,4 @@
+###
 %baseclass-preinclude <iostream>
 %lsp-needed
 
@@ -20,13 +21,15 @@
 %token BY TO FROM
 
 %token COMMA
-%token EOS
+%token EOS // END_OF_STATEMENT
 
 %token VARIABLE
 %token CONSTANT
 
 %token ADD SUBTRACT
 %token MULTIPLY DIVIDE
+
+%token OP CP // OPENING_PARENTHESIS, CLOSING_PARENTHESIS
 
 %left AND OR NOT
 %left GREATER_THAN SMALLER_THAN EQUALS
@@ -60,7 +63,7 @@ body:
     std::cout << "body -> epsilon" << std::endl;
   }
 |
-  statement statements
+  statements
   {
     std::cout << "body -> statement statements" << std::endl;
   }
@@ -291,5 +294,10 @@ expression:
   NOT expression
   {
     std::cout << "expression -> NOT expression" << std::endl;
+  }
+|
+  OP expression CP
+  {
+    std::cout << "expression -> OP expression CP" << std::endl;
   }
 ;

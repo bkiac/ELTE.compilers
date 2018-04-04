@@ -47,8 +47,8 @@ DIVIDE       return Parser::DIVIDE;
 "<"          return Parser::SMALLER_THAN;
 "="          return Parser::EQUALS;
 
-"("          // unused in test files;
-")"          // unused in test files;
+"("          return Parser::OP; // OPENING_PARENTHESIS
+")"          return Parser::CP; // CLOSING_PARENTHESIS
 
 
 ^"*".*$      // do nothing
