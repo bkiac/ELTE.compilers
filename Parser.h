@@ -11,7 +11,7 @@ class Parser: public ParserBase
 {
         
     public:
-		Parser(std::istream & in) : lexer(&in, &std::cerr) {}
+        Parser(std::istream & in) : lexer(&in, &std::cerr) {}
         int parse();
 
     private:

@@ -1,4 +1,3 @@
-###
 %baseclass-preinclude <iostream>
 %lsp-needed
 
@@ -31,9 +30,12 @@
 
 %token OP CP // OPENING_PARENTHESIS, CLOSING_PARENTHESIS
 
-%left AND OR NOT
-%left GREATER_THAN SMALLER_THAN EQUALS
-
+%left OR
+%left AND
+%left NOT
+%left EQUALS
+%left SMALLER_THAN GREATER_THAN
+ 
 %%
 
 
@@ -109,9 +111,9 @@ statements:
 
 statement:
   move
-    {
-      std::cout << "statement -> move" << std::endl;
-    }
+  {
+    std::cout << "statement -> move" << std::endl;
+  }
 |
   read
   {
@@ -266,14 +268,14 @@ expression:
     std::cout << "expression -> VARIABLE" << std::endl;
   }
 |
-  expression GREATER_THAN expression
-  {
-    std::cout << "expression -> expression GREATER_THAN expression" << std::endl;
-  }
-|
   expression SMALLER_THAN expression
   {
     std::cout << "expression -> expression SMALLER_THAN expression" << std::endl;
+  }
+|
+  expression GREATER_THAN expression
+  {
+    std::cout << "expression -> expression GREATER_THAN expression" << std::endl;
   }
 |
   expression EQUALS expression
