@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <sstream>
+#include "Parser.h"
 #include <FlexLexer.h>
-#include <cstdlib>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -13,9 +14,9 @@ int main(int argc, char* argv[])
     ifstream in;
     input_handler(in, argc, argv);
 
-    yyFlexLexer fl(&in, &cout);
-    fl.yylex();
-    
+    Parser pars(in);
+    pars.parse();
+
     return 0;
 }
 

@@ -1,10 +1,7 @@
 %option noyywrap c++ yylineno
 
 %{
-
-#include <iostream>
-#include <cstdlib>
-
+#include "Parserbase.h"
 %}
 
 DIGIT [0-9]
@@ -12,47 +9,57 @@ WS    [ \t\n]
 
 %%
 
-PROGRAM	 std::cout << "keyword: " << YYText() << std::endl;
-DATA	 std::cout << "keyword: " << YYText() << std::endl;
-TYPE     std::cout << "keyword: " << YYText() << std::endl;
-I	 std::cout << "keyword: " << YYText() << std::endl;
-B	 std::cout << "keyword: " << YYText() << std::endl;
-TRUE	 std::cout << "keyword: " << YYText() << std::endl;
-FALSE	 std::cout << "keyword: " << YYText() << std::endl;
-AND	 std::cout << "keyword: " << YYText() << std::endl;
-OR	 std::cout << "keyword: " << YYText() << std::endl;
-NOT	 std::cout << "keyword: " << YYText() << std::endl;
-IF	 std::cout << "keyword: " << YYText() << std::endl;
-ELSEIF	 std::cout << "keyword: " << YYText() << std::endl;
-ELSE	 std::cout << "keyword: " << YYText() << std::endl;
-ENDIF	 std::cout << "keyword: " << YYText() << std::endl;
-WHILE	 std::cout << "keyword: " << YYText() << std::endl;
-ENDWHILE std::cout << "keyword: " << YYText() << std::endl;
-MOVE	 std::cout << "keyword: " << YYText() << std::endl;
-READ	 std::cout << "keyword: " << YYText() << std::endl;
-TO	 std::cout << "keyword: " << YYText() << std::endl;
+PROGRAM      return Parser::PROGRAM;
 
-ADD       std::cout << "operator: " << YYText() << std::endl;
-SUBSTRACT std::cout << "operator: " << YYText() << std::endl;
-MULTIPLY  std::cout << "operator: " << YYText() << std::endl;
-DIVIDE    std::cout << "operator: " << YYText() << std::endl;
-">"       std::cout << "operator: " << YYText() << std::endl;
-"<"       std::cout << "operator: " << YYText() << std::endl;
-"="       std::cout << "operator: " << YYText() << std::endl;
-":"       std::cout << "operator: " << YYText() << std::endl;
+DATA{WS}*":" return Parser::DATA;
+TYPE         return Parser::TYPE;
+I            return Parser::INT;
+B            return Parser::BOOL;
 
-"("  std::cout << "opening_parenthesis" << std::endl;
-")"  std::cout << "closing_parenthesis" << std::endl;
+TRUE         return Parser::TRUE;
+FALSE        return Parser::FALSE;
 
-[a-zA-Z][a-zA-Z0-9]*  std::cout << "variable: " << YYText() << std::endl;
+AND          return Parser::AND;
+OR           return Parser::OR;
+NOT          return Parser::NOT;
 
-^"*".*$ std::cout << "comment: " << YYText()  << std::endl;
+IF           return Parser::IF;
+ELSEIF       return Parser::ELSEIF;
+ELSE         return Parser::ELSE;
+ENDIF        return Parser::ENDIF;
 
-"," std::cout << "comma" << std::endl; 
-"." std::cout << "end_of_statement" << std::endl;
+WHILE        return Parser::WHILE;
+ENDWHILE     return Parser::ENDWHILE;
 
-{DIGIT}+  std::cout << "constant: " << YYText() << std::endl;
-{WS}+
+MOVE         return Parser::MOVE;
+READ         return Parser::READ;
+WRITE        return Parser::WRITE;
+
+BY           return Parser::BY;
+FROM         return Parser::FROM;
+TO           return Parser::TO;
+
+ADD          return Parser::ADD;
+SUBTRACT     return Parser::SUBTRACT;
+MULTIPLY     return Parser::MULTIPLY;
+DIVIDE       return Parser::DIVIDE;
+">"          return Parser::GREATER_THAN;
+"<"          return Parser::SMALLER_THAN;
+"="          return Parser::EQUALS;
+
+"("          // unused in test files;
+")"          // unused in test files;
+
+
+^"*".*$      // do nothing
+
+","          return Parser::COMMA; 
+"."          return Parser::EOS; // END_OF_STATEMENT
+
+{DIGIT}+     return Parser::CONSTANT;
+{WS}+        // do nothing
+
+[a-zA-Z][a-zA-Z0-9]*  return Parser::VARIABLE;
 
 . { std::cerr << "Lexical error in line " << lineno() << "." << std::endl; exit(1); }
 
