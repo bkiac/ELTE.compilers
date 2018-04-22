@@ -2,7 +2,7 @@
 
 // $insert class.h
 #include "Parser.h"
-
+#include <cstdlib>
 
 inline void Parser::error(char const *msg)
 {
@@ -13,8 +13,15 @@ inline void Parser::error(char const *msg)
 // $insert lex
 inline int Parser::lex()
 {
+    int token = lexer.yylex();
     d_loc__.first_line = lexer.lineno();
-    return lexer.yylex();
+    
+    if (token == VARIABLE || token == CONSTANT)
+    {
+        d_val__.text = new std::string(lexer.YYText());
+    }
+    
+    return token;
 }
 
 inline void Parser::print()         

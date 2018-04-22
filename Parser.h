@@ -4,14 +4,14 @@
 // $insert baseclass
 #include "Parserbase.h"
 #include "FlexLexer.h"
-#include <cstdlib>
+#include <map>
 
 #undef Parser
 class Parser: public ParserBase
 {
         
     public:
-        Parser(std::istream & in) : lexer(&in, &std::cerr) {}
+        Parser(std::istream &in) : lexer(&in, &std::cerr) {}
         int parse();
 
     private:
@@ -20,6 +20,8 @@ class Parser: public ParserBase
         int lex();                      // returns the next token from the
                                         // lexical scanner. 
         void print();                   // use, e.g., d_token, d_loc
+
+        std::map<std::string, variable_data> symbol_table;
 
     // support functions for parse():
         void executeAction(int ruleNr);

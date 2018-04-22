@@ -18,4 +18,4 @@ do
     done
 done
 
-echo "ok: $success/5, error: $failed/25"
+echo "ok: $success/6, error: $failed/25"
