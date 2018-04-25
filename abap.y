@@ -23,7 +23,7 @@
 %token EOS // END_OF_STATEMENT
 
 %token <text> VARIABLE
-%token <text> CONSTANT
+%token CONSTANT
 
 %token ADD SUBTRACT
 %token MULTIPLY DIVIDE
@@ -38,27 +38,10 @@
 
 %type <exp> expression
 
-%type <stm> declaration
-
-%type <stm> loop
-
-%type <stm> condition
-%type <stm> condition_elseif
-
-%type <stm> move
-%type <stm> read
-%type <stm> write
-
-%type <stm> add
-%type <stm> subtract
-%type <stm> multiply
-%type <stm> divide
-
 %union
 {
   std::string *text;
   expression_data *exp;
-  statement_data *stm;
 }
 
 %%
@@ -200,10 +183,6 @@ move:
                    ". Type mismatch." << std::endl;
       exit(1);
     }
-    else
-    {
-      $$ = new statement_data(d_loc__.first_line);
-    }
 
     delete $2;
     delete $4;
@@ -219,10 +198,6 @@ read:
                    ". Variable '" << *$3 << "' is undeclared." << std::endl;
       exit(1);
     }
-    else
-    {
-      $$ = new statement_data(d_loc__.first_line);
-    }
 
     delete $3;
   }
@@ -231,8 +206,6 @@ read:
 write:
   WRITE expression EOS
   {
-    $$ = new statement_data(d_loc__.first_line);
-
     delete $2;
   }
 ;
@@ -259,8 +232,6 @@ add:
                    ". Right operand is not an integer." << std::endl;
       exit(1);
     }
-
-    $$ = new statement_data(d_loc__.first_line);
     
     delete $2;
     delete $4;
@@ -289,8 +260,6 @@ subtract:
                    ". Right operand is not an integer." << std::endl;
       exit(1);
     }
-
-    $$ = new statement_data(d_loc__.first_line);
     
     delete $2;
     delete $4;
@@ -319,8 +288,6 @@ multiply:
                    ". Left operand is not an integer." << std::endl;
       exit(1);
     }
-
-    $$ = new statement_data(d_loc__.first_line);
     
     delete $2;
     delete $4;
@@ -349,8 +316,6 @@ divide:
                    ". Left operand is not an integer." << std::endl;
       exit(1);
     }
-
-    $$ = new statement_data(d_loc__.first_line);
     
     delete $2;
     delete $4;
@@ -367,10 +332,6 @@ loop:
                    ". Loop condition is not a boolean." << std::endl;
       exit(1);
     }
-    else
-    {
-      $$ = new statement_data($2->line);
-    }
 
     delete $2;
   }
@@ -386,10 +347,6 @@ condition:
                    ". Condition is not a boolean." << std::endl;
       exit(1);
     }
-    else
-    {
-      $$ = new statement_data($2->line);
-    }
 
     delete $2;
   }
@@ -401,10 +358,6 @@ condition:
       std::cerr << "Error in line: " << d_loc__.first_line << 
                    ". Condition is not a boolean." << std::endl;
       exit(1);
-    }
-    else
-    {
-      $$ = new statement_data($2->line);
     }
     
     delete $2;
@@ -430,10 +383,6 @@ condition_elseif:
                    ". Condition is not a boolean." << std::endl;
       exit(1);
     }
-    else
-    {
-      $$ = new statement_data($2->line);
-    }
     
     delete $2;
   }
@@ -444,8 +393,6 @@ expression:
   CONSTANT
   {
     $$ = new expression_data(d_loc__.first_line, integer);
-    
-    delete $1;
   }
 |
   TRUE
@@ -521,10 +468,17 @@ expression:
 |
   expression EQUALS expression
   {
-    if ($1->exp_type != $3->exp_type)
+    if ($1->exp_type != integer)
     {
       std::cerr << "Error in line: " << $1->line << 
-                   ". Type mismatch." << std::endl;
+                   ". Left operand is not an integer." << std::endl;
+      exit(1);
+    }
+
+    if ($3->exp_type != integer)
+    {
+      std::cerr << "Error in line: " << $3->line << 
+                   ". Right operand is not an integer." << std::endl;
       exit(1);
     }
 
@@ -594,5 +548,7 @@ expression:
   OP expression CP
   {
     $$ = $2;
+
+    delete $2;
   }
 ;
