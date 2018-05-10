@@ -22,6 +22,8 @@ class Parser: public ParserBase
         void print();                   // use, e.g., d_token, d_loc
 
         std::map<std::string, variable_data> symbol_table;
+        int counter = 0;
+        int counter_endif = 0;
 
     // support functions for parse():
         void executeAction(int ruleNr);

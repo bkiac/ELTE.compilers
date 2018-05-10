@@ -1,4 +1,8 @@
-abap
+*
+!*.*
+!*/
+
 lex.yy.cc
 parse.cc
 Parserbase.h
+*.o

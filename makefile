@@ -23,7 +23,7 @@ parse.cc: $(COMPILERNAME).y
 	bisonc++ $(COMPILERNAME).y
 
 $(COMPILERNAME): $(COMPILERNAME).cc lex.yy.cc parse.cc
-	g++ -o$(COMPILERNAME) $(COMPILERNAME).cc parse.cc lex.yy.cc
+	g++ -o $(COMPILERNAME) $(COMPILERNAME).cc parse.cc lex.yy.cc
 
 $(SCANNERTEST): $(SCANNERTEST).cc lex.yy.cc
-	g++ -o$(SCANNERTEST) $(SCANNERTEST).cc lex.yy.cc
+	g++ -o $(SCANNERTEST) $(SCANNERTEST).cc lex.yy.cc

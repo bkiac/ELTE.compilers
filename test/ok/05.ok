@@ -6,11 +6,11 @@ SUBTRACT 2 FROM a.
 MULTIPLY a BY a.
 DIVIDE a BY 2.
 READ TO b.
-IF a = 10 OR NOT b.
+IF a = 32 OR NOT b.
     WRITE a.
-ELSEIF a = 11.
+ELSEIF a = 18.
     WRITE 1.
-ELSEIF a = 12.
+ELSEIF a = 8.
     WRITE 2.
 ELSE.
     WRITE b.
